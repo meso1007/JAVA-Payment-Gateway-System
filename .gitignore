@@ -51,4 +51,7 @@ buildNumber.properties
 
 # Spring Boot
 *.pid
-*.log 
+*.log
+
+# Oracle JDK
+Oracle_JDK-24.jdk/ 
