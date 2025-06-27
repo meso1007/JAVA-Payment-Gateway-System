@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>決済システム - Payment System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .payment-method {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .payment-method:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .payment-method.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .row .form-group {
+            flex: 1;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💳 決済システム</h1>
+        
+        <div class="payment-methods">
+            <div class="payment-method active" data-method="creditcard">
+                💳 クレジットカード
+            </div>
+            <div class="payment-method" data-method="paypal">
+                🅿️ PayPal
+            </div>
+            <div class="payment-method" data-method="banktransfer">
+                🏦 銀行振込
+            </div>
+        </div>
+        
+        <form id="paymentForm">
+            <!-- クレジットカードフォーム -->
+            <div id="creditcard-form" class="payment-form">
+                <div class="form-group">
+                    <label for="cardNumber">カード番号</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234-5678-9012-3456" required>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group">
+                        <label for="expirationDate">有効期限</label>
+                        <input type="text" id="expirationDate" name="expirationDate" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userName">カード名義人</label>
+                    <input type="text" id="userName" name="userName" placeholder="TARO YAMADA" required>
+                </div>
+            </div>
+            
+            <!-- PayPalフォーム -->
+            <div id="paypal-form" class="payment-form hidden">
+                <div class="form-group">
+                    <label for="paypalEmail">PayPalメールアドレス</label>
+                    <input type="email" id="paypalEmail" name="paypalEmail" placeholder="user@example.com" required>
+                </div>
+            </div>
+            
+            <!-- 銀行振込フォーム -->
+            <div id="banktransfer-form" class="payment-form hidden">
+                <div class="form-group">
+                    <label for="accountNumber">口座番号</label>
+                    <input type="text" id="accountNumber" name="accountNumber" placeholder="1234567890" required>
+                </div>
+                <div class="form-group">
+                    <label for="bankName">銀行名</label>
+                    <input type="text" id="bankName" name="bankName" placeholder="東京銀行" required>
+                </div>
+            </div>
+            
+            <!-- 共通フィールド -->
+            <div class="form-group">
+                <label for="gatewayName">決済ゲートウェイ</label>
+                <select id="gatewayName" name="gatewayName" required>
+                    <option value="">選択してください</option>
+                    <option value="Stripe">Stripe</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Square">Square</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">金額 (円)</label>
+                <input type="number" id="amount" name="amount" step="0.01" min="0" placeholder="1000.00" required>
+            </div>
+            
+            <input type="hidden" id="transactionId" name="transactionId">
+            
+            <button type="submit" class="submit-btn">決済を実行</button>
+        </form>
+        
+        <div id="result" class="result hidden"></div>
+    </div>
+    
+    <script>
+        // 決済方法の切り替え
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // アクティブクラスの切り替え
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+                
+                // フォームの表示切り替え
+                const methodType = this.dataset.method;
+                document.querySelectorAll('.payment-form').forEach(form => form.classList.add('hidden'));
+                document.getElementById(methodType + '-form').classList.remove('hidden');
+            });
+        });
+        
+        // フォーム送信
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // トランザクションIDを自動生成
+            const timestamp = new Date().getTime();
+            const random = Math.floor(Math.random() * 1000);
+            const transactionId = `TXN-${timestamp}-${random}`;
+            document.getElementById('transactionId').value = transactionId;
+            
+            const formData = new FormData(this);
+            const activeMethod = document.querySelector('.payment-method.active').dataset.method;
+            
+            try {
+                const response = await fetch(`/api/payments/${activeMethod}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.text();
+                
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = result;
+                resultDiv.className = 'result success';
+                resultDiv.classList.remove('hidden');
+                
+            } catch (error) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = 'エラーが発生しました: ' + error.message;
+                resultDiv.className = 'result error';
+                resultDiv.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html> 
