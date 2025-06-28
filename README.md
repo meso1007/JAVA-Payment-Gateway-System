@@ -1,6 +1,7 @@
 # Payment Gateway System
 
 A modern payment processing web application built with **Spring Boot** (Backend) and **Next.js** (Frontend), featuring a beautiful UI with Tailwind CSS.
+This App is practice project for using Spring Boot as Restfull API.
 
 ## 🚀 Features
 
@@ -114,16 +115,7 @@ Open your browser and navigate to `http://localhost:3000`
 ## 🎨 UI Screenshots
 
 ### Main Payment Form
-![Payment Form](screenshots/payment-form.png)
-
-### Credit Card Payment
-![Credit Card](screenshots/credit-card.png)
-
-### PayPal Payment
-![PayPal](screenshots/paypal.png)
-
-### Bank Transfer
-![Bank Transfer](screenshots/bank-transfer.png)
+![Payment Form](./screenshots/top-page.png)
 
 ## 🔒 Security Features
 
@@ -187,4 +179,4 @@ If you encounter any issues or have questions:
 
 ---
 
-**Built with ❤️ using Spring Boot and Next.js**
+**Built with SHOYA HORIUCHI using Spring Boot and Next.js**
